@@ -29,8 +29,28 @@ public class Main {
         //4.
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter an animal here: ");
-        animal = scanner.next();
+        animal = scanner.next().toLowerCase();
+
         System.out.println("you entered: " + animal);
+
+
+        switch (animal) {
+            case "sheep":
+                hunger = hungerSheep;
+                System.out.println("Current animal: " + animal + ",\n Hunger: "  + hunger);
+                break;
+            case "chicken":
+                hunger = hungerChicken;
+                System.out.println("Current animal: " + animal + ",\n Hunger: " + hunger);
+                break;
+            case "cow":
+                hunger = hungerCow;
+                System.out.println("Current animal: "+ animal + ",\n Hunger: " + hunger);
+                break;
+            default:
+                System.out.println("Please enter one of those: sheep, cow, chicken");
+
+        }
 
 
 
