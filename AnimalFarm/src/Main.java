@@ -4,110 +4,137 @@ import java.util.Scanner;
 
 public class Main {
 
-
+    static int hungerSheep = 80;
+    static int hungerCow = 30;
+    static int hungerChicken = 30;
+    static boolean isSheep = false;
+    static boolean isCow = false;
+    static boolean isChicken = false;
+    static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
 
-        //2.
-        String animal;
-        int hunger = -1;
-        int hungerSheep;
-        int hungerCow;
-        int hungerChicken;
-        boolean isSheep = false;
-        boolean isCow = false;
-        boolean isChicken = false;
+
+        int hunger;
+
+        while (true) {
+            printHunger();
+
+            System.out.print("Enter an animal here: ");
+            String animal = scanner.next().toLowerCase();
+            System.out.println(STR."you entered: \{animal}");
+
+            isSheep = false;
+            isChicken = false;
+            isCow = false;
+
+            //hunger is a Int
+            hunger = getHungerOfAnimal(animal); //hungerVALUEofcurrentanimal
+            System.out.println(hunger);
+
+            if (hunger < 0) {
+                continue;
+            }
 
 
+            if (hasHunger(hunger, animal)) {
 
-        //3.
-        hungerSheep = 50;
-        hungerChicken = 70;
-        hungerCow = 70;
+                if (isSheep) {
+                    hungerSheep -= 20;
+                    System.out.println(STR."New value of HungerSheep: \{hungerSheep}");
+                } else if (isChicken) {
+                    hungerChicken -= 20;
+                    System.out.println(STR."New value of HungerChicken: \{hungerChicken}");
+                } else if (isCow) {
+                    hungerCow -= 20;
+                    System.out.println(STR."New value of HungerCow: \{hungerCow}");
 
-        System.out.println("HungerScore:\n" + "Sheep: " + hungerSheep + "\n" + "Chicken: " + hungerChicken + "\n" + "Cow: " + hungerCow);
-
-
-        //4.
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter an animal here: ");
-        animal = scanner.next().toLowerCase();
-
-        System.out.println("you entered: " + animal);
-
-        //5
-        switch (animal) {
-            case "sheep":
-                hunger = hungerSheep;
-                isSheep = true;
-                System.out.println("Current animal: " + animal + ",\n Hunger: "  + hunger);
-                break;
-            case "chicken":
-                hunger = hungerChicken;
-                isChicken = true;
-                System.out.println("Current animal: " + animal + ",\n Hunger: " + hunger);
-                break;
-            case "cow":
-                hunger = hungerCow;
-                isCow = true;
-                System.out.println("Current animal: "+ animal + ",\n Hunger: " + hunger);
-                break;
-            default:
-                System.out.println("Please enter one of those: sheep, cow, chicken.");
-        }
-        //6
-        System.out.println("hunger outside switch " + hunger);
-
-        // i do not need to ask for the animal, since hunger is defined anyways
-        if (hunger >= 75) {
-            System.out.println("the animal is beeing fed");
-        } else if (hunger >= 50 && hunger < 75) {
-            Scanner feedScanner = new Scanner(System.in);
-            System.out.println("Will you feed the " + animal + "? -> type `yes` or `no` :");
-            String answer = feedScanner.next().toLowerCase();
-            System.out.println(answer);
-
-                if(answer.equals("yes")) {
-                    System.out.println("please feed the " + animal + "!");
-
-                    if(isSheep) {
-                        if (hungerSheep > 20) {
-                            hungerSheep = Math.max(0, hungerSheep - 20); // This ensures that the value doesn't go below 0
-                            System.out.println("New value of HungerSheep: " + hungerSheep);
-                            if (hungerSheep >= 100) {
-                                System.out.println("Your " + animal + " starved to death");
-                            }
-                        }
-                    } else if (isChicken) {
-                        if(hungerChicken > 20) {
-                            hungerChicken = Math.max(0, hungerChicken - 20);
-                            System.out.println("New value of HungerChicken: " + hungerChicken);
-                            if (hungerChicken >= 100) {
-                                System.out.println("Your " + animal + "starved to death");
-                            }
-                        }
-                    } else if(isCow) {
-                        if (hungerCow > 20) {
-                            hungerCow = Math.max(0, hungerCow - 20);
-                            System.out.println("New value of HungerCow: " + hungerCow );
-                            if ( hungerCow >= 100) {
-                                System.out.println("Your " + animal + "starved to death");
-                            }
-                        }
-                    } else {
-                        System.out.println("unknown animal, pls repeat process");
-                    }
-                } else if (answer.equals("no")) {
-                    System.out.println("The " + animal + "is not hungry, pls do not feed");
                 } else {
-                    System.out.println("please type yes or no");
+                    System.out.println("unknown animal, pls repeat process");
+                    isSheep = false;
+                    isChicken = false;
+                    isCow = false;
                 }
+            }
+            feedTheAnimals();
 
-        } else {
-            System.out.println("The " + animal + " cant be fed right now");
+
+            if (hungerSheep >= 100 || hungerChicken >= 100 || hungerCow >= 100) {
+                System.out.println(STR."your \{animal} starved to death! Game over!");
+                break;
+            }
+
+
         }
-
-
     }
 
+
+
+
+
+    public static void printHunger () {
+        System.out.println("HungerScore:\n" + "Sheep: " + hungerSheep + "\n" + "Chicken: " + hungerChicken + "\n" + "Cow: " + hungerCow);
+    }
+
+    public static int getHungerOfAnimal(String animal) {
+        switch (animal) {
+            case "sheep":
+                isSheep = true;
+                System.out.println("Current animal: " + animal);
+                return hungerSheep;
+            case "chicken":
+                isChicken = true;
+                System.out.println("Current animal: " + animal);
+                return hungerChicken;
+            case "cow":
+                isCow = true;
+                System.out.println("Current animal: " + animal);
+                return hungerCow;
+            default:
+                System.out.println("Please enter one of those: sheep, cow, chicken.");
+                return -1;
+        }
+    }
+
+
+    public static boolean hasHunger(int hunger, String animal) {
+        if (hunger >= 75) {
+            System.out.println("the animal is being fed");
+            return true;
+        } else if (hunger >= 50) {
+            Scanner feedScanner = new Scanner(System.in);
+            System.out.println(STR."Will you feed the \{animal}? -> type `yes` or `no` :");
+            String answer = feedScanner.next().toLowerCase();
+            System.out.println(answer);
+            if (answer.equals("yes")) {
+                return true;
+                //} //else if (answer.equals("no")) {
+//                System.out.println(STR."The \{animal} is not hungry, please do not feed");
+//                return false;
+            } else {
+                System.out.println("please type yes or no");
+                return false;
+            }
+        } else {
+            System.out.println(STR."The \{animal} can't be fed right now");
+            return false;
+        }
+    }
+
+
+    public static void feedTheAnimals() {
+        if (!isSheep) {
+            hungerSheep += 10;
+        }
+
+        if (!isChicken) {
+            hungerChicken += 10;
+        }
+
+        if (!isCow) {
+            hungerCow += 10;
+        }
+        printHunger();
+
+    }
 
 }
